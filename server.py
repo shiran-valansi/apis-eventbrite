@@ -46,8 +46,21 @@ def find_afterparties():
         # - (Make sure to save the JSON data from the response to the data
         #   variable so that it can display on the page as well.)
 
-        data = {'This': ['Some', 'mock', 'JSON']}
-        events = []
+        url = "https://www.eventbriteapi.com/v3/events/search/"
+
+        payload = {
+                    "token" : os.environ["EVENTBRITE_TOKEN"],
+                    "q" : query, 
+                    "location.address" : location, 
+                    "location.within" : distance
+
+        }
+
+
+        r = requests.get(url, params=payload)
+
+        data = r.json()
+        events = data["events"]
 
         return render_template("afterparties.html",
                                data=pformat(data),
